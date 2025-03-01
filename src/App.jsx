@@ -5,6 +5,8 @@ import Home from './components/Home'
 import Agents from './components/Agents'
 import CreateAgent from './components/CreateAgent'
 import AgentChat from './components/AgentChat'
+import Features from './components/Features'
+import Stake from './components/Stake'
 
 function App() {
   return (
@@ -38,6 +40,8 @@ function App() {
           <Route path="/agents" element={<Agents />} />
           <Route path="/create-agent" element={<CreateAgent />} />
           <Route path="/chat/:agentId" element={<AgentChat />} />
+          <Route path="/features" element={<Features />} />
+          <Route path="/stake" element={<Stake />} />
         </Routes>
         <Footer />
       </div>
