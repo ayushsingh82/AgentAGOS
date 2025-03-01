@@ -8,6 +8,7 @@ import AgentChat from './components/AgentChat'
 import Features from './components/Features'
 import Stake from './components/Stake'
 import Create from './components/Create'
+import CreateVideo from './components/CreateVideo'
 
 function App() {
   return (
@@ -44,6 +45,7 @@ function App() {
           <Route path="/features" element={<Features />} />
           <Route path="/stake" element={<Stake />} />
           <Route path="/create" element={<Create />} />
+          <Route path='/create-video' element={<CreateVideo/>}/>
         </Routes>
         <Footer />
       </div>

@@ -42,7 +42,7 @@ function Create() {
           </button>
         </div>
       ) : (
-        <Link to={link} className="relative group">
+        <Link to="/create-video" className="relative group">
           <div className="absolute -inset-0.5 bg-gradient-to-r from-[#4ADE80] to-[#22C55E] rounded-lg blur opacity-30 group-hover:opacity-60 transition duration-1000 group-hover:duration-200" />
           <button className="relative px-6 py-3 bg-[#1F1F1F] border border-[#4ADE80]/40 rounded-lg font-['Share_Tech_Mono'] text-[#4ADE80] flex items-center space-x-2 group-hover:border-[#4ADE80] transition-colors">
             <span>Get Started</span>
@@ -62,7 +62,28 @@ function Create() {
 
   return (
     <div className="pt-20">
-      <div className="max-w-3xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
+      <div className="max-w-3xl mx-auto px-4 sm:px-6 lg:px-8 py-12 relative">
+        {/* Vertical $AGOS text - moved further right */}
+        <div className="absolute -right-96 top-1/2 -translate-y-1/2 z-10">
+          <div className="relative">
+            <div className="absolute -left-2 -top-2 h-1 w-24 bg-gradient-to-r from-[#4ADE80] to-transparent -rotate-90 origin-left"></div>
+            <div 
+              className="text-[120px] font-['Share_Tech_Mono'] text-[#4ADE80] leading-none -rotate-90 origin-left whitespace-nowrap"
+              style={{
+                textShadow: `
+                  0 0 20px rgba(74,222,128,0.3),
+                  0 0 40px rgba(74,222,128,0.2),
+                  0 0 60px rgba(74,222,128,0.1)
+                `,
+                WebkitTextStroke: '2px rgba(74,222,128,0.2)'
+              }}
+            >
+              $AGOS
+            </div>
+            <div className="absolute -right-2 -bottom-2 h-1 w-24 bg-gradient-to-r from-[#4ADE80] to-transparent -rotate-90 origin-right"></div>
+          </div>
+        </div>
+
         <div className="space-y-8">
           {createOptions.map((option, index) => (
             <div key={option.title} className="relative">
