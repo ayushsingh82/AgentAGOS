@@ -7,7 +7,7 @@ function Navbar() {
         <div className="flex justify-between h-20">
           <div className="flex items-center space-x-4">
             <Link to="/" className="flex items-center">
-              <span className="text-2xl font-bold text-[#4ADE80] ml-8">Move-AI</span>
+              <span className="text-2xl font-bold text-[#4ADE80] ml-8">AgentAGOS</span>
             </Link>
             <div className="hidden md:flex items-center ml-16">
               <div className="relative flex items-center rounded-md bg-[#112118]/50 p-[1px] group">
@@ -19,11 +19,11 @@ function Navbar() {
                 <div className="flex items-center relative">
                   <NavItem to="/features" text="Features" />
                   <Divider />
-                  <NavItem to="/experience" text="Experience Rogue" />
+                  <NavItem to="/experience" text="Experience AGOS" />
                   <Divider />
-                  <NavItem to="/create" text="Create w/ Rogue" />
+                  <NavItem to="/create" text="Create w/ AGOS" />
                   <Divider />
-                  <NavItem to="/stake" text="STAKE $ROGUE" />
+                  <NavItem to="/stake" text="STAKE $AGOS" />
                   <Divider />
                   <NavItem to="/terminal" text="Terminal" isLast />
                 </div>
@@ -35,8 +35,8 @@ function Navbar() {
             <div className="relative p-[1px] rounded-lg group">
               <div className="absolute inset-0 rounded-lg border border-[#4ADE80]/20"></div>
               <div className="absolute inset-[3px] rounded-lg border border-[#4ADE80]/10"></div>
-              <div className="relative bg-[#112118] rounded-lg px-4 py-2.5">
-                <span className="text-gray-400 text-sm">$ROGUE:</span>
+              <div className="relative bg-[#112118] rounded-lg px-4 py-2.5 border border-[#4ADE80]/20">
+                <span className="text-gray-400 text-sm">$AGOS:</span>
                 <span className="text-[#4ADE80] ml-2">0.000155</span>
               </div>
             </div>

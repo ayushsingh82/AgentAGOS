@@ -12,7 +12,7 @@ function Footer() {
           
           <div className="flex items-center space-x-4">
             <button className="text-[#4ADE80] hover:text-[#22C55E] transition-colors">
-              BUY $ROGUE
+              BUY $AGOS
             </button>
             <div className="h-4 w-[1px] bg-[#4ADE80]/20"></div>
             <button className="relative p-[1px] rounded-md group">

@@ -62,13 +62,13 @@ function Features() {
         {/* Main content box */}
         <div className={`
           relative overflow-hidden rounded-xl p-6 h-full
-          bg-black
+          bg-[#1F1F1F]
           border-2 border-[#4ADE80]/30
           hover:border-[#4ADE80]/60
           transition-all duration-500
           group-hover:shadow-[0_0_30px_-5px_rgba(74,222,128,0.3)]
           hover:scale-105
-          font-['Press_Start_2P']
+          font-['Share_Tech_Mono']
         `}>
           {/* Inner border */}
           <div className="absolute inset-[3px] rounded-lg border border-[#4ADE80]/20" />
@@ -86,10 +86,10 @@ function Features() {
           {/* Content */}
           <div className="relative z-10">
             <div className="text-4xl mb-4">{feature.icon}</div>
-            <h3 className="text-base font-normal text-[#4ADE80] mb-4 leading-relaxed">
+            <h3 className="text-base text-[#4ADE80] mb-3">
               {feature.title}
             </h3>
-            <p className="text-xs text-gray-300 leading-relaxed">
+            <p className="text-sm text-gray-300 leading-relaxed">
               {feature.description}
             </p>
           </div>
@@ -115,9 +115,9 @@ function Features() {
           <div className="relative">
             {/* Background with border */}
             <div className="absolute -inset-1 bg-black rounded-lg"></div>
-            <h2 className="relative text-2xl font-normal text-center rounded-lg bg-[#4ADE80] px-8 py-3 border-2 border-black font-['Press_Start_2P']">
+            <h2 className="relative text-2xl text-center rounded-lg bg-[#4ADE80] px-8 py-3 border-2 border-black font-['Share_Tech_Mono']">
               <span className="text-black">Main Pillars</span>
-              <span className="text-white"> of ROGUE</span>
+              <span className="text-white"> of AGOS</span>
             </h2>
           </div>
         </div>

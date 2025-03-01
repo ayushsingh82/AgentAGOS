@@ -7,6 +7,7 @@ import CreateAgent from './components/CreateAgent'
 import AgentChat from './components/AgentChat'
 import Features from './components/Features'
 import Stake from './components/Stake'
+import Create from './components/Create'
 
 function App() {
   return (
@@ -42,6 +43,7 @@ function App() {
           <Route path="/chat/:agentId" element={<AgentChat />} />
           <Route path="/features" element={<Features />} />
           <Route path="/stake" element={<Stake />} />
+          <Route path="/create" element={<Create />} />
         </Routes>
         <Footer />
       </div>
