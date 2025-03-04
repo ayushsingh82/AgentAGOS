@@ -113,26 +113,46 @@ function Experience() {
                     className="w-full h-full object-cover opacity-50"
                   />
                 </div>
-
-                {/* Controls Overlay */}
-                <div className="absolute bottom-0 left-0 right-0 p-4 bg-gradient-to-t from-black/80 to-transparent">
-                  <div className="flex justify-center space-x-4">
-                    <button 
-                      onClick={() => setIsLive(!isLive)}
-                      className={`px-6 py-2 rounded-lg font-['Share_Tech_Mono'] text-sm transition-colors
-                        ${isLive ? 'bg-red-500 hover:bg-red-600' : 'bg-[#4ADE80] hover:bg-[#22C55E]'}`}
-                    >
-                      {isLive ? 'STOP' : 'START'}
-                    </button>
-                  </div>
-                </div>
               </div>
 
-              {/* Stream Info */}
-              <div className="p-4">
-                <p className="text-[#4ADE80] font-['Share_Tech_Mono']">
-                  {isLive ? 'Live right now' : 'Stream ended'}
-                </p>
+              {/* Stream Info and Controls */}
+              <div className="p-4 flex items-center justify-between">
+                {/* Navigation and Stop Controls */}
+                <div className="flex items-center space-x-4">
+                  <button 
+                    className="text-[#4ADE80] hover:text-[#22C55E] transition-colors"
+                    onClick={() => console.log('Previous')}
+                  >
+                    <svg className="w-6 h-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 19l-7-7 7-7" />
+                    </svg>
+                  </button>
+
+                  <button 
+                    onClick={() => setIsLive(!isLive)}
+                    className={`px-6 py-2 rounded-lg font-['Share_Tech_Mono'] text-sm transition-colors
+                      ${isLive ? 'bg-red-500 hover:bg-red-600' : 'bg-[#4ADE80] hover:bg-[#22C55E]'}`}
+                  >
+                    {isLive ? 'STOP' : 'START'}
+                  </button>
+
+                  <button 
+                    className="text-[#4ADE80] hover:text-[#22C55E] transition-colors"
+                    onClick={() => console.log('Next')}
+                  >
+                    <svg className="w-6 h-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" />
+                    </svg>
+                  </button>
+                </div>
+
+                {/* Live Status */}
+                <div className="flex items-center space-x-2">
+                  <span className="w-2 h-2 bg-red-500 rounded-full animate-pulse"></span>
+                  <p className="text-[#4ADE80] font-['Share_Tech_Mono']">
+                    Live right now
+                  </p>
+                </div>
               </div>
             </div>
           </div>
