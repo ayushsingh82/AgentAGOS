@@ -9,8 +9,13 @@ import Features from './components/Features'
 import Stake from './components/Stake'
 import Create from './components/Create'
 import CreateVideo from './components/CreateVideo'
+import Experience from './components/Experience'
+
+
 
 function App() {
+
+   
   return (
     <div className="min-h-screen pb-12 bg-[#0C1C16] relative">
       {/* Grid pattern overlay */}
@@ -46,6 +51,7 @@ function App() {
           <Route path="/stake" element={<Stake />} />
           <Route path="/create" element={<Create />} />
           <Route path='/create-video' element={<CreateVideo/>}/>
+          <Route path="/experience" element={<Experience />} />
         </Routes>
         <Footer />
       </div>
