@@ -14,6 +14,8 @@ function Experience() {
   const [currentScriptIndex, setCurrentScriptIndex] = useState(0)
   const soundRef = useRef(null)
   const speechSynthRef = useRef(null)
+  const queueRef = useRef([]) // Store queue in ref
+  const isSpeakingRef = useRef(false) // Store speaking state in ref
   
   // Sample users and messages for auto-generation
   const sampleUsers = [
@@ -39,11 +41,15 @@ function Experience() {
     "Great community"
   ]
 
-  // Initialize speech synthesis
+  // Initialize speech synthesis with direct user interaction approach
   useEffect(() => {
     if ('speechSynthesis' in window) {
       speechSynthRef.current = window.speechSynthesis;
+      console.log("Speech synthesis initialized");
+    } else {
+      console.error("Speech synthesis not supported in this browser");
     }
+    
     return () => {
       if (speechSynthRef.current) {
         speechSynthRef.current.cancel();
@@ -100,133 +106,160 @@ function Experience() {
     }
   };
 
-  // Function to read content using speech synthesis
-  const readContent = (text) => {
-    if (!speechSynthRef.current) return;
-    
-    // Cancel any ongoing speech
-    speechSynthRef.current.cancel();
-    
-    // Create a new utterance
-    const utterance = new SpeechSynthesisUtterance(text);
-    
-    // Configure voice settings
-    utterance.rate = 1.0;  // Speed of speech (0.1 to 10)
-    utterance.pitch = 1.0; // Pitch of voice (0 to 2)
-    utterance.volume = 0.8; // Volume (0 to 1)
-    
-    // Try to get a specific voice
-    // Get voices immediately or handle voice loading asynchronously
-    let voices = speechSynthRef.current.getVoices();
-    if (voices.length === 0) {
-      // If voices aren't loaded yet, set up an event to load them
-      window.speechSynthesis.onvoiceschanged = () => {
-        voices = speechSynthRef.current.getVoices();
-        const preferredVoice = voices.find(voice => 
-          voice.name.includes('Male') && voice.lang.includes('en')
-        ) || voices.find(voice => voice.lang.includes('en')) || voices[0];
-        
-        if (preferredVoice) {
-          utterance.voice = preferredVoice;
-        }
-      };
-    } else {
-      const preferredVoice = voices.find(voice => 
-        voice.name.includes('Male') && voice.lang.includes('en')
-      ) || voices.find(voice => voice.lang.includes('en')) || voices[0];
-      
-      if (preferredVoice) {
-        utterance.voice = preferredVoice;
-      }
+  // Add this simple utility at the top of your component
+  const speakText = (text, onComplete) => {
+    // Chrome and some browsers require a user action before allowing speech
+    if (!window.speechSynthesis) {
+      console.error("Speech synthesis not supported");
+      return false;
     }
     
-    // Add events to track when speech finishes
-    utterance.onend = function() {
-      console.log("Speech finished for script", currentScriptIndex + 1);
-      
-      // Use a timeout to ensure state is updated properly before checking
-      setTimeout(() => {
-        // Move to next script if available
-        if (currentScriptIndex < agentScripts.length - 1 && isReading) {
-          const nextIndex = currentScriptIndex + 1;
-          setCurrentScriptIndex(nextIndex);
-          
-          // Add agent message to chat
-          const time = new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
-          setMessages(prevMessages => [...prevMessages, {
-            text: agentScripts[nextIndex],
-            user: "AnchorMan",
-            time: time
-          }]);
-          
-          // Read the next script after a short pause
-          setTimeout(() => {
-            if (isReading) {
-              readContent(agentScripts[nextIndex]);
-            }
-          }, 300);
-        } else {
-          setIsReading(false);
-        }
-      }, 100);
+    console.log("Creating speech for:", text.substring(0, 30) + "...");
+    
+    // Create and configure utterance
+    const utterance = new SpeechSynthesisUtterance(text);
+    
+    // Set completion callback
+    utterance.onend = () => {
+      console.log("Speech completed");
+      if (onComplete) onComplete();
     };
     
-    // Add error handling
-    utterance.onerror = function(event) {
-      console.error("Speech synthesis error:", event);
-      // Try to recover by moving to next script
-      if (currentScriptIndex < agentScripts.length - 1 && isReading) {
-        goToNextScript();
-      }
+    // Set error handler
+    utterance.onerror = (event) => {
+      console.error("Speech error:", event);
+      if (onComplete) onComplete();
     };
     
     // Speak the text
-    speechSynthRef.current.speak(utterance);
+    window.speechSynthesis.speak(utterance);
+    console.log("Speech started");
     
-    // Add the first message to chat
-    if (text !== agentScripts[currentScriptIndex]) {
+    return true;
+  };
+
+  // Much simpler read all scripts function - no state dependencies
+  const readAllScripts = () => {
+    let currentIndex = 0;
+    let isSpeaking = true;
+    
+    console.log(`Starting to read all ${agentScripts.length} scripts`);
+    
+    // Function to read one script and then call itself for the next
+    function readNextScript() {
+      // Exit if we've read all scripts or reading was stopped
+      if (currentIndex >= agentScripts.length || !isSpeaking) {
+        console.log("Finished reading all scripts or reading was stopped");
+        setIsReading(false);
+        return;
+      }
+      
+      const scriptText = agentScripts[currentIndex];
+      console.log(`Reading script ${currentIndex + 1}/${agentScripts.length}`);
+      
+      // Update UI with current script
+      setCurrentScriptIndex(currentIndex);
+      
+      // Add to chat
       const time = new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
-      setMessages(prevMessages => [...prevMessages, {
-        text: text,
+      setMessages(prev => [...prev, {
+        text: scriptText,
         user: "AnchorMan",
         time: time
       }]);
+      
+      // Create and configure speech
+      const utterance = new SpeechSynthesisUtterance(scriptText);
+      
+      // Configure voice with minimal settings for compatibility
+      utterance.volume = 1.0;
+      utterance.rate = 1.0;
+      
+      // When this script finishes, move to the next one
+      utterance.onend = function() {
+        console.log(`Completed script ${currentIndex + 1}`);
+        currentIndex++;
+        setTimeout(readNextScript, 800); // Delay between scripts
+      };
+      
+      // If there's an error, try to continue
+      utterance.onerror = function(event) {
+        console.error(`Speech error on script ${currentIndex + 1}:`, event);
+        currentIndex++;
+        setTimeout(readNextScript, 800);
+      };
+      
+      // Start speaking
+      try {
+        window.speechSynthesis.speak(utterance);
+      } catch (error) {
+        console.error("Speech error:", error);
+        currentIndex++;
+        setTimeout(readNextScript, 800);
+      }
     }
+    
+    // Function to stop reading (can be called from outside)
+    window.stopReading = function() {
+      console.log("Manually stopping reading");
+      isSpeaking = false;
+      if (window.speechSynthesis) {
+        window.speechSynthesis.cancel();
+      }
+    };
+    
+    // Start the reading process
+    readNextScript();
+    
+    return window.stopReading; // Return the stop function
   };
-  
-  // Toggle reading state
+
+  // Toggle reading with the new approach
   const toggleReading = () => {
     if (isReading) {
       // Stop reading
-      if (speechSynthRef.current) {
-        speechSynthRef.current.cancel();
-      }
       setIsReading(false);
+      if (window.stopReading) {
+        window.stopReading();
+      }
+      if (window.speechSynthesis) {
+        window.speechSynthesis.cancel();
+      }
     } else {
-      // Start reading
+      // Start reading with new approach
       setIsReading(true);
-      readContent(agentScripts[currentScriptIndex]);
+      
+      // Reset to first script and start reading
+      setCurrentScriptIndex(0);
+      const stopFunction = readAllScripts();
+      
+      // Store the stop function for cleanup
+      window.stopReadingFunction = stopFunction;
     }
   };
-  
-  // Navigation for scripts
+
+  // Replace previous/next script functions with these simpler versions
   const goToPreviousScript = () => {
     if (currentScriptIndex > 0) {
-      const newIndex = currentScriptIndex - 1;
-      setCurrentScriptIndex(newIndex);
+      // If reading, stop first
       if (isReading) {
-        readContent(agentScripts[newIndex]);
+        window.speechSynthesis.cancel();
+        setIsReading(false);
       }
+      
+      setCurrentScriptIndex(currentScriptIndex - 1);
     }
   };
-  
+
   const goToNextScript = () => {
     if (currentScriptIndex < agentScripts.length - 1) {
-      const newIndex = currentScriptIndex + 1;
-      setCurrentScriptIndex(newIndex);
+      // If reading, stop first
       if (isReading) {
-        readContent(agentScripts[newIndex]);
+        window.speechSynthesis.cancel();
+        setIsReading(false);
       }
+      
+      setCurrentScriptIndex(currentScriptIndex + 1);
     }
   };
 
