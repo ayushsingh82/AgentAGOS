@@ -10,7 +10,8 @@ import Stake from './components/Stake'
 import Create from './components/Create'
 import CreateVideo from './components/CreateVideo'
 import Experience from './components/Experience'
-
+import TextToText from './components/TextToText'
+import Terminal from './components/Terminal'
 
 
 function App() {
@@ -52,6 +53,8 @@ function App() {
           <Route path="/create" element={<Create />} />
           <Route path='/create-video' element={<CreateVideo/>}/>
           <Route path="/experience" element={<Experience />} />
+          <Route path="/text2text" element={<TextToText />} />
+          <Route path="/terminal" element={<Terminal />} />
         </Routes>
         <Footer />
       </div>

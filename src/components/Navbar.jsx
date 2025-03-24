@@ -41,7 +41,7 @@ function Navbar() {
               </div>
             </div>
             <Link 
-              to="/create-agent" 
+              to="/" 
               className="bg-[#4ADE80] text-[#0F172A] px-4 py-2.5 rounded-md hover:bg-[#22C55E] transition-colors"
             >
               Create Agent
